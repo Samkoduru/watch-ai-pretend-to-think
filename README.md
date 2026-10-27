@@ -2,7 +2,9 @@
 
 **How early does a reasoning model know its final answer?** We trained small probes on the hidden states of DeepSeek-R1-Distill-Qwen-1.5B while it wrote its chain of thought on MMLU-Redux questions. A probe can name the model's eventual answer while the reasoning is still going, which lets us stop the model early and save tokens.
 
-**Interactive page:** `web/theater.html`. Pick a question, press play, and watch the model's internal answer belief next to what an outside reader can tell from the visible text.
+**▶ Live demo:** https://samkoduru.github.io/watch-ai-pretend-to-think/theater.html
+
+Pick a question, press play, and watch the model's internal answer belief next to what an outside reader can tell from the visible text.
 
 ![status](https://img.shields.io/badge/model-DeepSeek--R1--Distill--1.5B-purple) ![compute](https://img.shields.io/badge/compute-Modal%20L4%20GPUs-blue) ![license](https://img.shields.io/badge/code-MIT-blue)
 
@@ -41,7 +43,7 @@ uv sync
 uv run modal setup                          # one-time: links the Modal CLI to your account
 ```
 
-**Just look at the results** (no GPU needed). The committed `web/theater_data.json` drives the page:
+**Just look at the results** (no GPU needed). The committed `web/theater_data.json` drives the page, and the same page is live at the link above:
 
 ```bash
 cd web && python3 -m http.server 8000      # open http://localhost:8000/theater.html
