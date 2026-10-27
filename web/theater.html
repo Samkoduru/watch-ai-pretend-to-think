@@ -1,0 +1,65 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Watch the AI Pretend to Think</title><link rel="stylesheet" href="style.css">
+<style>
+.wrap{max-width:1280px;margin:0 auto;padding:90px 4vw 40px}
+.hero2{padding:30px 0 10px;max-width:860px}
+.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;margin-top:16px}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}}
+.panel{padding:18px 20px}
+.cot{font:13.5px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;color:#c8cfe4;height:360px;overflow:auto;white-space:pre-wrap;word-break:break-word}
+.cot .skip{color:#5b6280;text-decoration:line-through;text-decoration-color:#5b628055}
+.cot .cut{display:block;margin:8px 0;color:var(--ok);font-weight:700}
+.q{font-size:15px;margin:0 0 6px}.opt{font-size:14px;color:#aab2cc}
+.mon{display:grid;grid-template-columns:auto 1fr auto;gap:5px 10px;align-items:center;font-size:13px}
+.mon .bar{height:14px}.mon .l{width:16px;font-weight:700}
+.mon .bar i{transition:width .12s}
+.xr .bar i{background:linear-gradient(90deg,#7CFFB2,#4cc9f0)}.rd .bar i{background:linear-gradient(90deg,#ffb86b,#ff6b9d)}
+.hd{font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chip{font-size:12px;padding:3px 10px;border-radius:99px;border:1px solid var(--line);color:var(--mut)}
+select,.btn{font:inherit}
+select{background:#0d1018;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:8px 10px;max-width:100%}
+canvas.c{width:100%;height:200px;display:block}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}th:first-child,td:first-child{text-align:left}
+.k{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 2px}.k span{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--mut)}
+.k i{width:14px;height:4px;border-radius:2px;display:inline-block}
+.res{margin-top:22px}
+#tiles .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}#tiles .kv>div{min-width:0}#tiles .stat{display:block;line-height:1.1;margin:4px 0}
+</style></head><body>
+<nav><b>AI X-Ray</b><a href="https://github.com/Samkoduru/clock-inside-the-ai">The Clock Inside the AI ↗</a><a class="on" href="theater.html">Watch the AI Pretend to Think</a></nav>
+<div class="wrap">
+<div class="hero2"><span class="tag">Demo 2 · DeepSeek-R1-Distill-Qwen-1.5B · MMLU-Redux questions</span>
+<h1 style="font-size:clamp(34px,5vw,60px)">Watch the AI pretend to think.</h1>
+<p style="font-size:18px">Reasoning models write out long "thinking" before they answer. But does the model already know its answer? Below, a small probe reads the model's internals while it thinks. Watch what it knows, next to what an outside reader can tell from the text. Then move the slider to stop the model early.</p></div>
+
+<div class="glass panel" id="tiles" style="margin-top:14px"></div>
+<div class="glass panel" style="margin-top:14px"><div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+<select id="pick" style="flex:1;min-width:260px"></select>
+<button class="btn" id="play">▶ Play</button><button class="btn" id="restart">⟲</button>
+<label class="mut" style="font-size:13px">speed <input id="speed" type="range" min="20" max="600" value="160" style="width:110px;vertical-align:middle"></label>
+<label class="mut" style="font-size:13px">stop when X-ray is <b id="tauV" style="color:var(--ok)">70%</b> sure <input id="tau" type="range" min="0.5" max="0.99" step="0.01" value="0.7" style="width:140px;vertical-align:middle"></label></div>
+<div id="qbox" style="margin-top:12px"></div></div>
+
+<div class="grid">
+<div class="glass panel"><p class="hd mut">The visible reasoning</p><div class="cot" id="cot"></div><div class="chips" id="status"></div></div>
+<div style="display:grid;gap:18px;align-content:start">
+<div class="glass panel xr"><p class="hd" style="color:var(--ok)">X-ray · what the model's insides say the final answer will be</p><div class="mon" id="xr"></div></div>
+<div class="glass panel rd"><p class="hd" style="color:#ffb86b">Outside reader · what a language model reading the text so far would guess</p><div class="mon" id="rd"></div></div>
+<div class="glass panel"><p class="hd mut">Belief in the model's eventual answer, over its reasoning</p><canvas class="c" id="line" width="1000" height="400"></canvas>
+<div class="k"><span><i style="background:var(--ok)"></i>X-ray (probe)</span><span><i style="background:#ffb86b"></i>Outside reader</span><span><i style="background:#9b8cff"></i>Forced answer</span><span><i style="background:#fff"></i>Stop point</span></div></div>
+</div></div>
+
+<div class="glass panel res"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px"><div><span class="tag">Across all test questions</span><h2 style="margin:0">How early does the model know?</h2></div>
+<div class="row" id="grp"><button class="btn on" data-g="all">All</button><button class="btn" data-g="easy">Recall subjects</button><button class="btn" data-g="hard">Reasoning subjects</button></div></div>
+<p class="mut" id="resNote"></p>
+<canvas class="c" id="agg" width="1200" height="380" style="height:300px"></canvas>
+<div class="k"><span><i style="background:var(--ok)"></i>X-ray (attention probe)</span><span><i style="background:#6c7aa8"></i>Single-token linear probe</span><span><i style="background:#9b8cff"></i>Forced answer</span><span><i style="background:#ffb86b"></i>Outside reader</span></div>
+<p class="mut" style="font-size:13px">Y axis: how often the method names the model's <em>final</em> answer, given only the first X% of its reasoning. Bands: 95% bootstrap CI over questions. Chance = 25%.</p></div>
+
+<div class="glass panel res"><span class="tag">Early exit</span><h2>Stop thinking when the X-ray is sure.</h2>
+<div id="ee"></div><p class="mut" style="font-size:13px" id="eeNote"></p></div>
+
+<div class="glass panel res"><span class="tag">Takeaways</span><h2>What we found</h2><ul class="l" id="take" style="padding-left:18px"></ul><span class="tag" style="margin-top:18px">Caveats</span><h2>What this does and doesn't show</h2><ul class="l" id="cav" style="padding-left:18px"></ul></div>
+<div class="foot" style="padding:30px 0">Method follows the idea in Goodfire's "Reasoning Theater" work (probes on final-answer information during chain-of-thought), re-implemented here at small scale on an open 1.5B model. Their results are on much larger models; ours are smaller-scale and not comparable number-for-number.</div>
+</div>
+<script type="module" src="theater.js"></script></body></html>

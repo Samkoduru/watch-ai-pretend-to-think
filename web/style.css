@@ -1,0 +1,18 @@
+:root{--bg:#05060b;--panel:rgba(14,17,28,.72);--line:rgba(255,255,255,.09);--txt:#e8ebf5;--mut:#98a0b8;--en:#4cc9f0;--hi:#ff9f1c;--ta:#f72585;--ok:#7CFFB2;--warn:#ffd166}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,"Noto Sans Devanagari","Noto Sans Tamil",sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--en);text-decoration:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;gap:22px;align-items:center;padding:14px 28px;background:linear-gradient(#05060bcc,#05060b00);backdrop-filter:blur(6px)}
+nav b{letter-spacing:.14em;font-size:12px;text-transform:uppercase;color:var(--mut)}nav a{color:var(--mut);font-size:14px}nav a.on,nav a:hover{color:#fff}
+.glass{background:var(--panel);border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(10px)}
+h1{font-size:clamp(40px,6vw,76px);line-height:1.02;margin:0 0 18px;letter-spacing:-.03em;background:linear-gradient(120deg,#fff,#7fdcff 55%,#ff9f1c);-webkit-background-clip:text;color:transparent}
+h2{font-size:clamp(26px,3vw,38px);line-height:1.12;margin:0 0 14px;letter-spacing:-.02em}
+p{color:#c4cade;margin:0 0 14px}small,.mut{color:var(--mut)}
+.tag{display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--en);margin-bottom:10px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;color:var(--mut)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.stat{font-size:44px;font-weight:700;letter-spacing:-.03em}
+.btn{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt);padding:7px 14px;border-radius:10px;font:inherit;font-size:14px}
+.btn:hover{background:rgba(255,255,255,.1)}.btn.on{background:rgba(76,201,240,.18);border-color:var(--en)}
+input[type=range]{width:100%;accent-color:var(--en)}
+.foot{padding:60px 8vw 80px;color:var(--mut);font-size:13px;max-width:900px}
